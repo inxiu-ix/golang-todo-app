@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	core_logger "github.com/inxiu-ix/golang-todo-app/internal/core/logger"
+	core_http_request "github.com/inxiu-ix/golang-todo-app/internal/core/transport/http/request"
 	core_http_response "github.com/inxiu-ix/golang-todo-app/internal/core/transport/http/response"
-	core_http_utils "github.com/inxiu-ix/golang-todo-app/internal/core/transport/http/utils"
 )
 
 func (h *UserHTTPHandler) DeleteUser(rw http.ResponseWriter, r *http.Request) {
@@ -14,7 +14,7 @@ func (h *UserHTTPHandler) DeleteUser(rw http.ResponseWriter, r *http.Request) {
 
 	responseHandler := core_http_response.NewHTTPResponseHandler(log, rw)
 
-	userId, err := core_http_utils.GetIntPathValue(r, "id")
+	userId, err := core_http_request.GetIntPathValue(r, "id")
 	if err != nil {
 		responseHandler.ErrorResponse(err, "failed to get user ID from path")
 		return
@@ -22,7 +22,7 @@ func (h *UserHTTPHandler) DeleteUser(rw http.ResponseWriter, r *http.Request) {
 
 	err = h.usersService.DeleteUser(ctx, userId)
 	if err != nil {
-		responseHandler.ErrorResponse(err, "failed to delete user") 
+		responseHandler.ErrorResponse(err, "failed to delete user")
 		return
 	}
 

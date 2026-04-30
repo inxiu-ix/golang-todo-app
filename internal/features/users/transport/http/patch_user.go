@@ -10,7 +10,6 @@ import (
 	core_http_request "github.com/inxiu-ix/golang-todo-app/internal/core/transport/http/request"
 	core_http_response "github.com/inxiu-ix/golang-todo-app/internal/core/transport/http/response"
 	core_http_types "github.com/inxiu-ix/golang-todo-app/internal/core/transport/http/types"
-	core_http_utils "github.com/inxiu-ix/golang-todo-app/internal/core/transport/http/utils"
 )
 
 type PatchUserRequest struct {
@@ -56,7 +55,7 @@ func (h *UserHTTPHandler) PatchUser(rw http.ResponseWriter, r *http.Request) {
 
 	responseHandler := core_http_response.NewHTTPResponseHandler(log, rw)
 
-	userId, err := core_http_utils.GetIntPathValue(r, "id")
+	userId, err := core_http_request.GetIntPathValue(r, "id")
 	if err != nil {
 		responseHandler.ErrorResponse(err, "failed to get user ID from path")
 		return
@@ -81,8 +80,8 @@ func (h *UserHTTPHandler) PatchUser(rw http.ResponseWriter, r *http.Request) {
 }
 
 func userPatchFromRequest(request PatchUserRequest) domain.UserPatch {
-	return domain.UserPatch{
-		FullName:    request.FullName.ToDomain(),
-		PhoneNumber: request.PhoneNumber.ToDomain(),
-	}
+	return domain.NewUserPatch(
+		request.FullName.ToDomain(),
+		request.PhoneNumber.ToDomain(),
+	)
 }
