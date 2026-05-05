@@ -12,13 +12,25 @@ import (
 )
 
 type PatchTaskRequest struct {
-	Title       core_http_types.Nullable[string] `json:"title"`
-	Description core_http_types.Nullable[string] `json:"description"`
-	Completed   core_http_types.Nullable[bool]   `json:"completed"`
+	Title       core_http_types.Nullable[string] `json:"title" example:"Buy milk"`
+	Description core_http_types.Nullable[string] `json:"description" example:"Buy milk at the store"`
+	Completed   core_http_types.Nullable[bool]   `json:"completed" example:"false"`
 }
 
 type PatchTaskResponse TaskDTOResponse
 
+// PatchTask godoc
+// @Summary Patch a task
+// @Description Patch a task by ID
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Param id path int true "Task ID"
+// @Param request body PatchTaskRequest true "Patch task request"
+// @Success 200 {object} PatchTaskResponse "Task"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad Request"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal Server Error"
+// @Router /tasks/{id} [patch]
 func (r *PatchTaskRequest) Validate() error {
 	if r.Title.Set {
 		if r.Title.Value == nil {
