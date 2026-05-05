@@ -6,7 +6,6 @@ COPY . .
 RUN CGO_ENABLED=0 go build -o /app/cmd/todoapp/exe /app/cmd/todoapp
 
 FROM alpine:3.23
-RUN apk add --no-cache tzdata
 WORKDIR /app
 COPY --from=builder /app/cmd/todoapp/exe /app
 COPY --from=builder /app/public /app/public

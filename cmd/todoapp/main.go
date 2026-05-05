@@ -9,6 +9,7 @@ import (
 	"time"
 
 	_ "github.com/inxiu-ix/golang-todo-app/docs"
+	_ "time/tzdata"
 	core_config "github.com/inxiu-ix/golang-todo-app/internal/core/config"
 	core_logger "github.com/inxiu-ix/golang-todo-app/internal/core/logger"
 	core_pgx_pool "github.com/inxiu-ix/golang-todo-app/internal/core/repository/postgres/pool/pgx"
