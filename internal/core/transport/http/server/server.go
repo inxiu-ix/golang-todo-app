@@ -74,8 +74,11 @@ func (s *HTTPServer) Run(ctx context.Context) error {
 	mux := core_http_middleware.ChainMiddleware(s.mux, s.middleware...)
 
 	server := &http.Server{
-		Addr:    s.config.Addr,
-		Handler: mux,
+		Addr:              s.config.Addr,
+		Handler:           mux,
+		ReadHeaderTimeout: s.config.ReadHeaderTimeout,
+		WriteTimeout:      s.config.WriteTimeout,
+		IdleTimeout:       s.config.IdleTimeout,
 	}
 
 	ch := make(chan error, 1)

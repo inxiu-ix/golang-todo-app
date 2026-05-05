@@ -1595,6 +1595,10 @@ function toggleTheme(isLight) {
 })();
 
 // ─── API ─────────────────────────────────────────────────
+function withTimeout(promise, ms, fallback) {
+    return Promise.race([promise, new Promise(resolve => setTimeout(() => resolve(fallback), ms))]);
+}
+
 async function api(path, opts = {}) {
     const url = API_BASE.replace(/\/$/, '') + path;
     const res = await fetch(url, {
@@ -1784,7 +1788,7 @@ async function loadTasks() {
     try {
         const [tasks, nextPage] = await Promise.all([
             api('/tasks?' + p),
-            api('/tasks?' + pNext).catch(() => [])
+            withTimeout(api('/tasks?' + pNext).catch(() => []), 5000, [])
         ]);
         const list       = tasks || [];
         const hasNextPage = (nextPage || []).length > 0;
@@ -1976,7 +1980,7 @@ async function loadUsers() {
     try {
         const [users, nextPage] = await Promise.all([
             api('/users?' + new URLSearchParams({ limit, offset })),
-            api('/users?' + pNext).catch(() => [])
+            withTimeout(api('/users?' + pNext).catch(() => []), 5000, [])
         ]);
         const list        = users || [];
         const hasNextPage = (nextPage || []).length > 0;

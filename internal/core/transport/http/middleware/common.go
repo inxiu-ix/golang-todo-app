@@ -101,15 +101,15 @@ func Panic() Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			defer func() {
-				ctx := r.Context()
-				log := core_logger.FromContext(ctx)
-				responseHandler := core_http_response.NewHTTPResponseHandler(log, w)
 				if p := recover(); p != nil {
+					ctx := r.Context()
+					log := core_logger.FromContext(ctx)
+					responseHandler := core_http_response.NewHTTPResponseHandler(log, w)
 					responseHandler.PanicResponse(p, "during request processing occurred unexpected panic")
 				}
-
-				next.ServeHTTP(w, r)
 			}()
+
+			next.ServeHTTP(w, r)
 		})
 	}
 }

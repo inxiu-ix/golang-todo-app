@@ -8,8 +8,11 @@ import (
 )
 
 type Config struct {
-	Addr            string        `envconfig:"ADDR" required:"true"`
-	ShutdownTimeout time.Duration `envconfig:"SHUTDOWN_TIMEOUT" default:"30s"`
+	Addr              string        `envconfig:"ADDR" required:"true"`
+	ShutdownTimeout   time.Duration `envconfig:"SHUTDOWN_TIMEOUT" default:"30s"`
+	ReadHeaderTimeout time.Duration `envconfig:"READ_HEADER_TIMEOUT" default:"5s"`
+	WriteTimeout      time.Duration `envconfig:"WRITE_TIMEOUT" default:"30s"`
+	IdleTimeout       time.Duration `envconfig:"IDLE_TIMEOUT" default:"120s"`
 }
 
 func NewConfig() (Config, error) {

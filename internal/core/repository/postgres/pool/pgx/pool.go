@@ -32,6 +32,9 @@ func NewPool(
 		return nil, fmt.Errorf("parse pgx config: %w", err)
 	}
 
+	pgxConfig.MinConns = 2
+	pgxConfig.MaxConns = 10
+
 	pool, err := pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return nil, fmt.Errorf("create pgx pool: %w", err)
