@@ -1,0 +1,590 @@
+basePath: /api/v1
+definitions:
+  core_http_response.ErrorResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  core_http_types.Nullable-string:
+    properties:
+      set:
+        type: boolean
+      value:
+        type: string
+    type: object
+  statistics_transport_http.GetStatisticsResponse:
+    properties:
+      tasks_average_completion_time:
+        example: 10s
+        type: string
+      tasks_completed:
+        example: 10
+        type: integer
+      tasks_completed_rate:
+        example: 0.5
+        type: number
+      tasks_created:
+        example: 10
+        type: integer
+    type: object
+  tasks_transport_http.CreateTaskRequest:
+    properties:
+      author_user_id:
+        example: 1
+        type: integer
+      description:
+        example: Buy milk at the store
+        maxLength: 1000
+        minLength: 3
+        type: string
+      title:
+        example: Buy milk
+        maxLength: 100
+        minLength: 1
+        type: string
+    required:
+    - author_user_id
+    - title
+    type: object
+  tasks_transport_http.CreateTaskResponse:
+    properties:
+      author_user_id:
+        example: 1
+        type: integer
+      completed:
+        example: false
+        type: boolean
+      completed_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      description:
+        example: Buy milk at the store
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Buy milk
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+  tasks_transport_http.GetTaskResponse:
+    properties:
+      author_user_id:
+        example: 1
+        type: integer
+      completed:
+        example: false
+        type: boolean
+      completed_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      description:
+        example: Buy milk at the store
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Buy milk
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+  tasks_transport_http.PatchTaskRequest:
+    type: object
+  tasks_transport_http.PatchTaskResponse:
+    properties:
+      author_user_id:
+        example: 1
+        type: integer
+      completed:
+        example: false
+        type: boolean
+      completed_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      description:
+        example: Buy milk at the store
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Buy milk
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+  tasks_transport_http.TaskDTOResponse:
+    properties:
+      author_user_id:
+        example: 1
+        type: integer
+      completed:
+        example: false
+        type: boolean
+      completed_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      description:
+        example: Buy milk at the store
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Buy milk
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+  users_transport_http.CreateUserRequest:
+    properties:
+      full_name:
+        example: Ivan Ivanov
+        maxLength: 100
+        minLength: 3
+        type: string
+      phone_number:
+        example: "+79991234567"
+        type: string
+    required:
+    - full_name
+    type: object
+  users_transport_http.CreateUserResponse:
+    properties:
+      full_name:
+        example: Ivan Ivanov
+        type: string
+      id:
+        example: 1
+        type: integer
+      phone_number:
+        example: "+79991234567"
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+  users_transport_http.GetUserResponse:
+    properties:
+      full_name:
+        example: Ivan Ivanov
+        type: string
+      id:
+        example: 1
+        type: integer
+      phone_number:
+        example: "+79991234567"
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+  users_transport_http.PatchUserRequest:
+    type: object
+  users_transport_http.PatchUserResponse:
+    properties:
+      full_name:
+        example: Ivan Ivanov
+        type: string
+      id:
+        example: 1
+        type: integer
+      phone_number:
+        example: "+79991234567"
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+  users_transport_http.UserDTOResponse:
+    properties:
+      full_name:
+        example: Ivan Ivanov
+        type: string
+      id:
+        example: 1
+        type: integer
+      phone_number:
+        example: "+79991234567"
+        type: string
+      version:
+        example: 1
+        type: integer
+    type: object
+host: 127.0.0.1:5050
+info:
+  contact: {}
+  description: Todo Application API scheme
+  title: Golang Todo API
+  version: "1.0"
+paths:
+  /statistics:
+    get:
+      consumes:
+      - application/json
+      description: Get statistics with optional user ID, from date and to date
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        type: integer
+      - description: From date
+        format: date
+        in: query
+        name: from
+        type: string
+      - description: To date
+        format: date
+        in: query
+        name: to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Statistics
+          schema:
+            $ref: '#/definitions/statistics_transport_http.GetStatisticsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Get statistics
+      tags:
+      - statistics
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get tasks with optional user ID, limit and offset
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tasks
+          schema:
+            items:
+              $ref: '#/definitions/tasks_transport_http.TaskDTOResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Get tasks
+      tags:
+      - tasks
+    post:
+      consumes:
+      - application/json
+      description: Create a new task with the given title, description and author
+        user ID
+      parameters:
+      - description: Create task request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/tasks_transport_http.CreateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/tasks_transport_http.CreateTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Create a new task
+      tags:
+      - tasks
+  /tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a task by ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Delete a task
+      tags:
+      - tasks
+    get:
+      consumes:
+      - application/json
+      description: Get a task by ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task
+          schema:
+            $ref: '#/definitions/tasks_transport_http.GetTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Get a task by ID
+      tags:
+      - tasks
+    patch:
+      consumes:
+      - application/json
+      description: Patch a task by ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Patch task request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/tasks_transport_http.PatchTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task
+          schema:
+            $ref: '#/definitions/tasks_transport_http.PatchTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Patch a task
+      tags:
+      - tasks
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Get users with optional limit and offset
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Users
+          schema:
+            items:
+              $ref: '#/definitions/users_transport_http.UserDTOResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Get users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the given full name and phone number
+      parameters:
+      - description: Create user request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/users_transport_http.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/users_transport_http.CreateUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Create a new user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Delete a user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Get a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User
+          schema:
+            $ref: '#/definitions/users_transport_http.GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Get a user by ID
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Patch a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Patch user request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/users_transport_http.PatchUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User
+          schema:
+            $ref: '#/definitions/users_transport_http.PatchUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/core_http_response.ErrorResponse'
+      summary: Patch a user
+      tags:
+      - users
+swagger: "2.0"

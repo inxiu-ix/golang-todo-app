@@ -74,6 +74,17 @@ logs-cleanup:
 		echo "Очистка логов отменена"; \
 	fi
 
+swagger-build:
+	@docker compose build --no-cache swagger
+
+swagger-gen:
+	@docker compose run --rm swagger \
+		init \
+		-g cmd/todoapp/main.go \
+		-o docs \
+		--parseInternal \
+		--parseDependency
+
 
 
 run:

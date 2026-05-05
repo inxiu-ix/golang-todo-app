@@ -11,6 +11,19 @@ import (
 
 type GetTasksResponse []TaskDTOResponse
 
+// GetTasks godoc
+// @Summary Get tasks
+// @Description Get tasks with optional user ID, limit and offset
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Param user_id query int false "User ID"
+// @Param limit query int false "Limit"
+// @Param offset query int false "Offset"
+// @Success 200 {object} GetTasksResponse "Tasks"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad Request"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal Server Error"
+// @Router /tasks [get]
 func (h *TaskHTTPHandler) GetTasks(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)
